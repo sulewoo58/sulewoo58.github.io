@@ -7,7 +7,7 @@ tags: [sample post, readability, test, intro]
 image:
   feature: so-simple-sample-image-2.jpg
   credit: Michael Rose
-  creditlink: http://mademistakes.com
+  creditlink: https://mademistakes.com
 comments: true
 share: true
 ---

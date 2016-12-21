@@ -21,7 +21,7 @@ Font Awesome
 Disqus comments integration
 You can set post image covers by using only Ghost narkdown editor just place something like this:
 
-    ![cover-image](http://path-to-your-image.jpg)
+    ![cover-image](https://path-to-your-image.jpg)
 
 You can also place other images witch will be put in text.
 
@@ -40,4 +40,4 @@ Example - two columns:
     </div>
 </div>
 
-[More info about Foundation framework](http://foundation.zurb.com/docs/)
+[More info about Foundation framework](https://foundation.zurb.com/docs/)
