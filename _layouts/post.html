@@ -1,71 +1,65 @@
-<!doctype html>
-<html lang="en">
-{% include head.html %}
-<body>
-  <main role="main">
-    <div class="grid grid-centered">
-      <div class="grid-cell">
-        {% include navigation.html %}
-        <article class="article reveal">
-          <header class="article-header">
-            <h1>{{ page.title }}</h1>
-            <p>{{ page.description }}</p>
-            <div class="article-list-footer">
-              <span class="article-list-date">
-                {{ page.date | date: "%B %-d, %Y" }}
-              </span>
-              <span class="article-list-divider">-</span>
-              <span class="article-list-minutes">
-                {% capture words %}
-                  {{ page.content | number_of_words }}
-                {% endcapture %}
-                {% unless words contains "-" %}
-                  {{ words | plus: 250 | divided_by: 250 | append: " minute read" }}
-                {% endunless %}
-              </span>
-              <span class="article-list-divider">-</span>
-              <div class="article-list-tags">
-                {% for tag in page.tags %}
-                  <a href="{{ 'tag/' | relative_url }}{{ tag }}">{{ tag }}</a>
-                {% endfor %}
-              </div>
-            </div>
-          </header>
+---
+layout: default
+---
+<div id="navbar" class="container">
+    <h5><a id="link-back" href="/">Back to Posts</a></h5>
+    {% include share.html page=page %}
+</div>
 
-          <div class="article-content">
-            {{ content }}
-          </div>
-
-          <div class="article-share">
-            {% assign page_title = page.title  | truncate '110' %}
-            <a href="" title="Share on Twitter" onclick="window.open('https://twitter.com/home?status={{ page_title }} - {{ page.url | absolute_url }} {% if site.social.twitter %}by @{{ site.social.twitter }}{% endif %}', 'newwindow', 'width=500, height=225'); return false;">
-              <span class="icon icon-social-twitter"></span>
-            </a>
-            <a href="" title="Share on Facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url }}', 'newwindow', 'width=500, height=500'); return false;">
-              <span class="icon icon-social-facebook"></span>
-            </a>
-            <a href="" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url={{ page.url | absolute_url }}', 'newwindow', 'width=550, height=400'); return false;">
-              <span class="icon icon-social-googleplus"></span>
-            </a>
-          </div>
-
-          {% if site.discus_identifier %}
-            <div id="disqus_thread" class="article-comments"></div>
-            <script>
-              (function() {
-                  var d = document, s = d.createElement('script');
-                  s.src = '//{{ site.discus_identifier }}.disqus.com/embed.js';
-                  s.setAttribute('data-timestamp', +new Date());
-                  (d.head || d.body).appendChild(s);
-              })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-          {% endif %}
-        </article>
-        {% include footer.html %}
-      </div>
+<div id="cover" class="container"
+     {% if page.image %}style="background-image: url({{ page.image }});"{% endif %}>
+    <div>
+        <h1>{{ page.title }}</h1>
+        <p>
+            {% for tag in page.tags %}
+                <a href="{{ site.baseurl }}/tags/{{ tag }}">{{ tag }}</a>
+                {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+        </p>
+        {% include cover_link.html cover=page.cover %}
     </div>
-  </main>
-  {% include javascripts.html %}
-</body>
-</html>
+</div>
+
+<div id="content" class="container post" role="main">
+    <div id="post-content">{{ content }}</div>
+    <div id="post-footer">
+        {% assign author = site.authors | where: 'name', page.author | first %}
+        <a id="post-author" href="{{ author.url }}">
+            <div id="author-image" style="background-image:url({{ author.image | default: '' }});">
+                <span class="sr-only">{{ author.name }}'s profile image</span>
+            </div>
+            <p id="author-name">{{ author.name }}</p>
+        </a>
+        <p id="post-date">{{ page.date | date: '%Y-%m-%d %H:%M' }}</p>
+        <a id="post-more" href="{{ author.url }}">
+            <span>Read more posts by this author</span>
+        </a>
+    </div>
+</div>
+
+<div id="post-links" class="container">
+    {% assign prev = page.previous %}
+    {% if prev %}
+        <div id="post-prev"
+             {% if prev.image %}style="background-image: url({{ prev.image }});"{% endif %}>
+            <div>
+                <h3><a href="{{ prev.url }}">{{ prev.title }}</a></h3>
+                <p>YOU MIGHT ENJOY</p>
+            </div>
+        </div>
+    {% endif %}
+    {% assign next = page.next %}
+    {% if next %}
+        <div id="post-next"
+             {% if next.image %}style="background-image: url({{ next.image }});"{% endif %}>
+            <div>
+                <h3><a href="{{ next.url }}">{{ next.title }}</a></h3>
+                <p>NEXT POST</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<div id="lightbox">
+    <div id="lightbox-image"></div>
+</div>
